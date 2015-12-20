@@ -1,12 +1,12 @@
 {
-  "name": "log-time",
-  "description": "Log a message prefixed by a timestamp.",
+  "name": "time-diff",
+  "description": "Returns the formatted, high-resolution time difference between `start` and `end` times.",
   "version": "0.1.0",
-  "homepage": "https://github.com/jonschlinkert/log-time",
+  "homepage": "https://github.com/jonschlinkert/time-diff",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
-  "repository": "jonschlinkert/log-time",
+  "repository": "jonschlinkert/time-diff",
   "bugs": {
-    "url": "https://github.com/jonschlinkert/log-time/issues"
+    "url": "https://github.com/jonschlinkert/time-diff/issues"
   },
   "license": "MIT",
   "files": [
@@ -25,7 +25,6 @@
     "pretty-time": "^0.2.0"
   },
   "devDependencies": {
-    "glob": "^6.0.1",
     "mocha": "*"
   },
   "keywords": [
@@ -34,10 +33,16 @@
   ],
   "verb": {
     "related": {
-      "list": []
+      "list": [
+        "pretty-time"
+      ]
     },
     "plugins": [
       "gulp-format-md"
-    ]
+    ],
+    "reflinks": [
+      "pretty-time"
+    ],
+    "layout": "default"
   }
 }
