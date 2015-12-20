@@ -1,0 +1,43 @@
+{
+  "name": "log-time",
+  "description": "Log a message prefixed by a timestamp.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/jonschlinkert/log-time",
+  "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+  "repository": "jonschlinkert/log-time",
+  "bugs": {
+    "url": "https://github.com/jonschlinkert/log-time/issues"
+  },
+  "license": "MIT",
+  "files": [
+    "index.js"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+    "ansi-red": "^0.1.1",
+    "is-number": "^2.1.0",
+    "pretty-time": "^0.2.0"
+  },
+  "devDependencies": {
+    "glob": "^6.0.1",
+    "mocha": "*"
+  },
+  "keywords": [
+    "log",
+    "time"
+  ],
+  "verb": {
+    "related": {
+      "list": []
+    },
+    "plugins": [
+      "gulp-format-md"
+    ]
+  }
+}
