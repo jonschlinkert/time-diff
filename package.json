@@ -1,7 +1,7 @@
 {
   "name": "time-diff",
   "description": "Returns the formatted, high-resolution time difference between `start` and `end` times.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "homepage": "https://github.com/jonschlinkert/time-diff",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "jonschlinkert/time-diff",
