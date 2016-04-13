@@ -78,7 +78,7 @@ Returns a function for logging out out both the cumulative elapsed time since th
 
 Results in something like:
 <br>
-<img width="484" alt="screen shot 2016-04-13 at 7 12 37 pm" src="https://cloud.githubusercontent.com/assets/383994/14512287/b92ff5be-01ab-11e6-8989-0aaaca01d66f.png">
+<img width="509" alt="screen shot 2016-04-13 at 7 45 12 pm" src="https://cloud.githubusercontent.com/assets/383994/14512800/478e1256-01b0-11e6-9e97-c6b625f097f7.png">
 
 **Params**
 
@@ -93,15 +93,15 @@ var diff = time.diff('my-app-name');
 
 // do stuff
 diff('after init');
-//=> [19:12:31] my-app-name: after init 133μs
+//=> [19:44:05] my-app-name: after init 108μs
 
 // do more stuff
 diff('before options');
-//=> my-app-name: before options 30μs (+10μs)
+//=> [19:44:05] my-app-name: before options 2ms (+2ms)
 
 // do more stuff
 diff('after options');
-//=> my-app-name: after options 8μs (+2μs)
+//=> [19:44:05] my-app-name: after options 2ms (+152μs)
 ```
 
 ## Examples
