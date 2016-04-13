@@ -42,64 +42,46 @@ function Time(options) {
   this.times = {};
 }
 
+/**
+ * Start a timer for the given `name`.
+ *
+ * ```js
+ * var time = new Time();
+ * time.start('foo');
+ * ```
+ * @param {String} `name` Name to use for the starting time.
+ * @return {Array} Returns the array from `process.hrtime()`
+ * @api public
+ */
+
 Time.prototype.start = function(name) {
   return (this.times[name] = process.hrtime());
 };
 
-Time.prototype.diff = function(name, options) {
-  var magenta = log.colors.magenta;
-  var gray = log.colors.gray;
-
-  var opts = {};
-  extend(opts, this.options, options);
-
-  this.start(name);
-  var time = this;
-  var prev;
-
-  if (typeof options.times === 'undefined') {
-    return function() {};
-  }
-
-  return function(msg) {
-    var key = name + ':' + msg;
-    var diff;
-
-    if (typeof prev !== 'undefined') {
-      diff = time.end(prev);
-    }
-
-    if (typeof opts.diffColor === 'function') {
-      gray = opts.diffColor;
-    }
-
-    if (opts.color === false) {
-      magenta = identity;
-      gray = identity;
-    }
-
-    if (opts.times === true || opts.times === name) {
-      var timeDiff = magenta(time.end(name));
-
-      if (typeof diff === 'string') {
-        timeDiff += gray(' (+' + diff + ')');
-      }
-
-      // create the arguments to log out
-      var args = [name, msg, timeDiff];
-
-      // support custom `.format` function
-      if (typeof opts.format === 'function') {
-        opts.format.apply(null, args);
-      } else {
-        format.apply(null, args);
-      }
-    }
-
-    time.start(key);
-    prev = key;
-  };
-};
+/**
+ * Returns the cumulative elapsed time since the **first time** `time.start(name)`
+ * was called.
+ *
+ * ```js
+ * var time = new Time();
+ * time.start('foo');
+ *
+ * // do stuff
+ * time.end('foo');
+ * //=> 104μs
+ *
+ * // do more stuff
+ * time.end('foo');
+ * //=> 1ms
+ *
+ * // do more stuff
+ * time.end('foo');
+ * //=> 2ms
+ * ```
+ * @param {String} `name` The name of the cached starting time to create the diff
+ * @return {Array} Returns the array from `process.hrtime()`
+ * @api public
+ */
 
 Time.prototype.end = function(name, smallest, digits) {
   var start = this.times[name];
@@ -115,6 +97,93 @@ Time.prototype.end = function(name, smallest, digits) {
   if (!smallest && this.smallest) smallest = this.smallest;
   if (!digits && this.digits) digits = this.digits;
   return pretty(process.hrtime(start), smallest, digits);
+};
+
+/**
+ * Returns a function for logging out out both the cumulative elapsed time since
+ * the first time `.diff(name)` was called, as well as the incremental elapsed
+ * time since the last `.diff(name)` was called. Unlike `.end()`, this method logs
+ * to `stderr` instead of returning a string. We could probably change this to
+ * return an object, feedback welcome.
+ *
+ * ```js
+ * var time = new Time();
+ * var diff = time.diff('foo');
+ *
+ * // do stuff
+ * diff('foo');
+ * //=> 104μs
+ *
+ * // do more stuff
+ * diff('bar');
+ * //=> 1ms
+ *
+ * // do more stuff
+ * diff('baz');
+ * //=> 2ms
+ * ```
+ * Results in something like:
+ *
+ * <img width="559" alt="screen shot 2016-04-13 at 6 17 31 pm" src="https://cloud.githubusercontent.com/assets/383994/14512156/93f0bf78-01aa-11e6-9859-8f2a4b47043d.png">
+ *
+ * @param {String} `name` The name of the starting time to store.
+ * @param {String} `options`
+ * @api public
+ */
+
+Time.prototype.diff = function(name, options) {
+  var magenta = log.colors.magenta;
+  var gray = log.colors.gray;
+
+  var opts = {};
+  extend(opts, this.options, options);
+
+  if (typeof opts.times === 'undefined') {
+    return function() {};
+  }
+
+  this.start(name);
+  var time = this;
+  var prev;
+
+  function diff(msg) {
+    var val;
+    if (typeof prev !== 'undefined') {
+      val = time.end(prev);
+    }
+
+    if (typeof opts.diffColor === 'function') {
+      gray = opts.diffColor;
+    }
+
+    if (opts.color === false) {
+      magenta = identity;
+      gray = identity;
+    }
+
+    if (opts.times === true || opts.times === name) {
+      var timeDiff = magenta(time.end(name));
+
+      if (typeof val === 'string') {
+        timeDiff += gray(' (+' + val + ')');
+      }
+
+      // create the arguments to log out
+      var args = [name, msg, timeDiff];
+
+      // support custom `.format` function
+      if (typeof opts.format === 'function') {
+        opts.format.apply(null, args);
+      } else {
+        format.apply(null, args);
+      }
+    }
+
+    time.start(name);
+    prev = name;
+  };
+
+  return diff;
 };
 
 function identity(val) {
