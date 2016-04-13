@@ -108,19 +108,19 @@ Time.prototype.end = function(name, smallest, digits) {
  *
  * ```js
  * var time = new Time();
- * var diff = time.diff('foo');
+ * var diff = time.diff('my-app-name');
  *
  * // do stuff
- * diff('foo');
- * //=> 104μs
+ * diff('after init');
+ * //=> [19:12:31] my-app-name: after init 133μs
  *
  * // do more stuff
- * diff('bar');
- * //=> 1ms
+ * diff('before options');
+ * //=> my-app-name: before options 30μs (+10μs)
  *
  * // do more stuff
- * diff('baz');
- * //=> 2ms
+ * diff('after options');
+ * //=> my-app-name: after options 8μs (+2μs)
  * ```
  * Results in something like:
  * <br>
