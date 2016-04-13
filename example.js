@@ -20,4 +20,3 @@ console.log(time.end('foo'));
 // console.log(time.end('bar'));
 // console.log(time.end('baz'));
 
-

@@ -20,29 +20,42 @@
     "test": "mocha"
   },
   "dependencies": {
-    "ansi-red": "^0.1.1",
+    "extend-shallow": "^2.0.1",
     "is-number": "^2.1.0",
+    "log-utils": "^0.1.0",
     "pretty-time": "^0.2.0"
   },
   "devDependencies": {
-    "mocha": "*"
+    "gulp-format-md": "^0.1.7",
+    "mocha": "^2.4.5"
   },
   "keywords": [
     "log",
     "time"
   ],
   "verb": {
+    "plugins": [
+      "gulp-format-md"
+    ],
+    "reflinks": [
+      "pretty-time",
+      "verb"
+    ],
     "related": {
       "list": [
         "pretty-time"
       ]
     },
-    "plugins": [
-      "gulp-format-md"
-    ],
-    "reflinks": [
-      "pretty-time"
-    ],
-    "layout": "default"
+    "layout": "default",
+    "toc": {
+      "render": false
+    },
+    "run": true,
+    "lint": {
+      "reflinks": true
+    },
+    "tasks": [
+      "readme"
+    ]
   }
 }
