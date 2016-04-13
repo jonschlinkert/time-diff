@@ -77,6 +77,7 @@ time.end('foo');
 Returns a function for logging out out both the cumulative elapsed time since the first time `.diff(name)` was called, as well as the incremental elapsed time since the last `.diff(name)` was called. Unlike `.end()`, this method logs to `stderr` instead of returning a string. We could probably change this to return an object, feedback welcome.
 
 Results in something like:
+<br>
 <img width="484" alt="screen shot 2016-04-13 at 7 12 37 pm" src="https://cloud.githubusercontent.com/assets/383994/14512287/b92ff5be-01ab-11e6-8989-0aaaca01d66f.png">
 
 **Params**

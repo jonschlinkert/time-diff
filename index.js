@@ -123,7 +123,7 @@ Time.prototype.end = function(name, smallest, digits) {
  * //=> 2ms
  * ```
  * Results in something like:
- *
+ * <br>
  * <img width="484" alt="screen shot 2016-04-13 at 7 12 37 pm" src="https://cloud.githubusercontent.com/assets/383994/14512287/b92ff5be-01ab-11e6-8989-0aaaca01d66f.png">
  *
  * @param {String} `name` The name of the starting time to store.
