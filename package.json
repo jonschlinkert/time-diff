@@ -32,8 +32,17 @@
     "strip-color": "^0.1.0"
   },
   "keywords": [
+    "console",
+    "diff",
+    "difference",
+    "elapse",
+    "elapsed",
     "log",
-    "time"
+    "pretty",
+    "terminal",
+    "time",
+    "time-diff",
+    "timer"
   ],
   "verb": {
     "plugins": [
@@ -45,7 +54,10 @@
     ],
     "related": {
       "list": [
-        "pretty-time"
+        "log-utils",
+        "time-diff",
+        "pretty-time",
+        "ansi-colors"
       ]
     },
     "layout": "default",
