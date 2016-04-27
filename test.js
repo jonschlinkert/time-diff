@@ -55,32 +55,32 @@ describe('time', function() {
       assert.equal(typeof time.diff, 'function');
     });
 
-    it('should NOT log times when `options.times` is NOT true', function() {
+    it('should NOT log times when `options.logDiff` is false', function() {
       var time = new Time();
       var error = console.error;
       var count = 0;
 
-      console.error = function(timestamp, name, msg, timeDiff) {
+      console.error = function(timestamp, name, msg, elapsed) {
         count++;
       };
 
-      var diff = time.diff('generator', {times: undefined});
+      var diff = time.diff('generator', {logDiff: false});
       diff('one');
       diff('two');
       diff('three');
       assert.equal(count, 0);
     });
 
-    it('should log times when `options.times` IS true', function() {
+    it('should log times when `options.logTimes` IS true', function() {
       var time = new Time();
       var error = console.error;
       var count = 0;
 
-      console.error = function(timestamp, name, msg, timeDiff) {
+      console.error = function(timestamp, name, msg, elapsed) {
         count++;
       };
 
-      var diff = time.diff('generator', {times: true});
+      var diff = time.diff('generator', {logTimes: true});
       diff('one');
       diff('two');
       diff('three');
@@ -92,14 +92,14 @@ describe('time', function() {
       var error = console.error;
       var count = 0;
 
-      console.error = function(timestamp, name, msg, timeDiff) {
+      console.error = function(timestamp, name, msg, elapsed) {
         count++;
       };
 
-      var times = 'one';
+      var name = 'one';
 
-      var one = time.diff('one', {times: times});
-      var two = time.diff('two', {times: times});
+      var one = time.diff('one', {logDiff: name});
+      var two = time.diff('two', {logDiff: name});
 
       one('foo');
       one('bar');
@@ -112,13 +112,13 @@ describe('time', function() {
       assert.equal(count, 3);
     });
 
-    it('should log colors when `options.color` is NOT false', function() {
+    it('should log colors when `options.nocolor` is NOT true', function() {
       var time = new Time();
       var error = console.error;
       var count = 0;
 
-      console.error = function(timestamp, name, msg, timeDiff) {
-        assert.notEqual(timeDiff, strip(timeDiff));
+      console.error = function(timestamp, name, msg, elapsed) {
+        assert.notEqual(elapsed, strip(elapsed));
         count++;
       };
 
@@ -129,17 +129,41 @@ describe('time', function() {
       assert.equal(count, 3);
     });
 
-    it('should NOT log colors when `options.color` is false', function() {
+    it('should NOT log colors when `options.nocolor` is true', function() {
       var time = new Time();
       var error = console.error;
       var count = 0;
 
-      console.error = function(timestamp, name, msg, timeDiff) {
-        assert.equal(timeDiff, strip(timeDiff));
+      console.error = function(timestamp, name, msg, elapsed) {
+        assert.equal(elapsed, strip(elapsed));
         count++;
       };
 
-      var diff = time.diff('generator', {times: true, color: false});
+      var diff = time.diff('generator', {nocolor: true});
+      diff('one');
+      diff('two');
+      diff('three');
+      assert.equal(count, 3);
+    });
+
+    it('should support a custom `formatArgs` function', function() {
+      var time = new Time();
+      var error = console.error;
+      var count = 0;
+
+      console.error = function(timestamp, name, msg, elapsed) {
+        if (count === 0) assert.equal(timestamp, 'one');
+        if (count === 1) assert.equal(timestamp, 'two');
+        if (count === 2) assert.equal(timestamp, 'three');
+        count++;
+      };
+
+      var diff = time.diff('generator', {
+        formatArgs: function(timestamp, name, msg) {
+          return msg;
+        }
+      });
+
       diff('one');
       diff('two');
       diff('three');

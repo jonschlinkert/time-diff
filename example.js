@@ -1,7 +1,9 @@
 'use strict';
 
-var argv = require('minimist')(process.argv.slice(2));
+var opts = {alias: {logDiff: 'd', logTime: 't'}, boolean: ['logDiff']};
+var argv = require('minimist')(process.argv.slice(2), opts);
 var Time = require('./');
+console.log(argv)
 
 var time = new Time(argv);
 time.start('foo');
@@ -28,17 +30,36 @@ console.log(time.end('foo'));
  * along with a "namespace" to use for diffs
  */
 
-var diff = time.diff('my-app-name', argv);
+time.options.formatArgs = function(timestamp, name, msg, elapsed) {
+  return [timestamp, msg, elapsed];
+};
+
+var diffAbc = time.diff('abc', argv);
+var diffXyz = time.diff('xyz', argv);
 
 /**
  * Next,
  */
 
 // do stuff
-diff('after init');
+diffAbc('after init');
 
 // do more stuff...
-diff('before options');
+diffAbc('before options');
 
 // then load some options
-diff('after options');
+diffAbc('after options');
+
+
+/**
+ * Next,
+ */
+
+// do stuff
+diffXyz('after init');
+
+// do more stuff...
+diffXyz('before options');
+
+// then load some options
+diffXyz('after options');

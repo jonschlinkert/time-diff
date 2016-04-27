@@ -131,72 +131,85 @@ Time.prototype.end = function(name, smallest, digits) {
  * @api public
  */
 
-Time.prototype.diff = function(name, options) {
-  var magenta = log.colors.magenta;
-  var gray = log.colors.gray;
-
+Time.prototype.diff = function(namespace, options) {
   var opts = {};
   extend(opts, this.options, options);
 
-  if (typeof opts.times === 'undefined') {
-    return function() {};
-  }
-
-  this.start(name);
+  this.start(namespace);
   var time = this;
   var prev;
 
   function diff(msg) {
-    var val;
+    if (typeof opts.logDiff === 'string') {
+      if (!toRegex(opts.logDiff).test(namespace)) {
+        // garbage collect
+        time.times[namespace] = null;
+        return;
+      }
+    }
+    if (opts.logDiff === false) {
+      // garbage collect
+      time.times[namespace] = null;
+      return;
+    }
+
+    var timestamp = log.timestamp;
+    var magenta = log.colors.magenta;
+    var gray = log.colors.gray;
+    var name = opts.prefix === false ? '' : namespace;
 
     if (typeof opts.diffColor === 'function') {
       gray = opts.diffColor;
     }
 
-    if (opts.color === false) {
+    if (opts.nocolor === true) {
       magenta = identity;
       gray = identity;
     }
 
-    if (opts.times === true || opts.times === name) {
-      var timeDiff = magenta(time.end(name));
-      if (typeof prev !== 'undefined') {
-        val = time.end(prev);
-      }
-
-      // start the next cycle
-      time.start(msg);
-      prev = msg;
-
-      if (typeof val === 'string') {
-        timeDiff += gray(' (+' + val + ')');
-      }
-
-      // create the arguments to log out
-      var args = [name, msg, timeDiff];
-
-      // support custom `.format` function
-      if (typeof opts.format === 'function') {
-        opts.format.apply(null, args);
-      } else {
-        format.apply(null, args);
-      }
+    if (opts.timestamp === false) {
+      timestamp = '';
     }
+
+    var elapsed = magenta(time.end(namespace));
+    var val;
+
+    if (typeof prev !== 'undefined') {
+      val = time.end(prev);
+    }
+
+    // start the next cycle
+    time.start(msg);
+    prev = msg;
+
+    if (typeof val === 'string') {
+      elapsed += gray(' (+' + val + ')');
+    }
+
+    // create the arguments to log out
+    var args = [timestamp, name, msg, elapsed].filter(Boolean);
+
+    // support custom `.format` function
+    if (typeof opts.formatArgs === 'function') {
+      args = [].concat(opts.formatArgs.apply(null, args) || []);
+    }
+
+    console.error.apply(console, args);
   };
 
   return diff;
 };
 
-function identity(val) {
-  return val;
+function toRegex(str) {
+  if (~str.indexOf(',')) {
+    str = '(' + str.split(',').join('|') + ')';
+  }
+  str = str.replace(/\*/g, '[^.]*?');
+  return new RegExp('^' + str + '$');
 }
 
-function format(name, msg, timeDiff) {
-  var args = [log.timestamp, name + ':', msg];
-  if (arguments.length === 3) {
-    args.push(timeDiff);
-  }
-  console.error.apply(console, args);
+function identity(val) {
+  return val;
 }
 
 /**
@@ -204,6 +217,3 @@ function format(name, msg, timeDiff) {
  */
 
 module.exports = Time;
-
-module.exports.format = format;
-
