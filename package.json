@@ -1,7 +1,7 @@
 {
   "name": "time-diff",
   "description": "Returns the formatted, high-resolution time difference between `start` and `end` times.",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "homepage": "https://github.com/jonschlinkert/time-diff",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "jonschlinkert/time-diff",
@@ -50,14 +50,15 @@
     ],
     "reflinks": [
       "pretty-time",
-      "verb"
+      "verb",
+      "minimist"
     ],
     "related": {
       "list": [
+        "ansi-colors",
         "log-utils",
-        "time-diff",
         "pretty-time",
-        "ansi-colors"
+        "time-diff"
       ]
     },
     "layout": "default",
