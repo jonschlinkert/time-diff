@@ -140,6 +140,10 @@ Time.prototype.diff = function(namespace, options) {
   var prev;
 
   function diff(msg) {
+    if (typeof opts.logTimeDiffs !== 'undefined') {
+      opts.logDiff = opts.logTimeDiffs;
+    }
+
     if (typeof opts.logDiff === 'string') {
       if (!toRegex(opts.logDiff).test(namespace)) {
         // garbage collect
